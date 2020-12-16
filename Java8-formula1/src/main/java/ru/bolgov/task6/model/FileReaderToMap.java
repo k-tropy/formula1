@@ -20,7 +20,7 @@ public class FileReaderToMap {
     }
 
     public Map<String, String> readFileCreateMap(String fileName) {
-        URL url = getClass().getClassLoader().getResource(fileName);//Как переписать путь?
+        URL url = getClass().getClassLoader().getResource(fileName);
 
         try (Stream<String> lines = Files.lines(Paths.get(url.getPath().substring(1)))) {
             lines.forEach(x -> mapFileLines.put(x.substring(0, 3), x.substring(3, x.length())));
