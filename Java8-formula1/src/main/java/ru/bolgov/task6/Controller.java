@@ -1,34 +1,29 @@
 package ru.bolgov.task6;
 
-import ru.bolgov.task6.model.AbbreviationKeyMapCreator;
-import ru.bolgov.task6.model.FileReaderToList;
-import ru.bolgov.task6.model.ReportCreater;
+import ru.bolgov.task6.model.FileReaderToMap;
+import ru.bolgov.task6.model.ReportCreator;
 import ru.bolgov.task6.view.Printer;
 
 public class Controller {
 
     public void printReport(String logStart, String logEnd, String abbreviations) {
-        FileReaderToList startReader = new FileReaderToList();
-        startReader.readFileCreateList(logStart);
-        AbbreviationKeyMapCreator startMapCreator = new AbbreviationKeyMapCreator();
-        startMapCreator.createMap(startReader.getListFileLines());
+        
+        FileReaderToMap startReader = new FileReaderToMap();
+        startReader.readFileCreateMap(logStart);
 
-        FileReaderToList endReader = new FileReaderToList();
-        endReader.readFileCreateList(logEnd);
-        AbbreviationKeyMapCreator endMapCreator = new AbbreviationKeyMapCreator();
-        endMapCreator.createMap(endReader.getListFileLines());
+        FileReaderToMap endReader = new FileReaderToMap();
+        endReader.readFileCreateMap(logEnd);
 
-        FileReaderToList abbReader = new FileReaderToList();
-        abbReader.readFileCreateList(abbreviations);
-        AbbreviationKeyMapCreator abbMapCreator = new AbbreviationKeyMapCreator();
-        abbMapCreator.createMap(abbReader.getListFileLines());
+        FileReaderToMap abbReader = new FileReaderToMap();
+        abbReader.readFileCreateMap(abbreviations);
 
-        ReportCreater reportCreater = new ReportCreater();
-        reportCreater.createReport(startMapCreator.getAbbreviationKeyMap(), endMapCreator.getAbbreviationKeyMap(),
-                abbMapCreator.getAbbreviationKeyMap());
+        ReportCreator reportCreator = new ReportCreator();
+        reportCreator.createReport(startReader.getMapFileLines(), 
+                                   endReader.getMapFileLines(),
+                                   abbReader.getMapFileLines());
 
         Printer printer = new Printer();
-        System.out.println(printer.orderByTimeUnderline15Racers(reportCreater.getReport()));
+        System.out.println(printer.orderByTimeUnderline15Racers(reportCreator.getReport()));
 
     }
 
