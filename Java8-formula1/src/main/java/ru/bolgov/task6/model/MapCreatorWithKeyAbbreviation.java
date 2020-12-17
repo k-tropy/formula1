@@ -8,22 +8,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class FileReaderToMap {
-    private final Map<String, String> mapFileLines;
+public class MapCreatorWithKeyAbbreviation {
+    private static final int INDEX_BEGINNING_ABBREVATION = 0;
+    private static final int INDEX_BEGINNING_INFORMATION = 3;
 
-    public Map<String, String> getMapFileLines() {
-        return mapFileLines;
-    }
+    public Map<String, String> createMap(String fileName) {
+        HashMap<String, String> mapFileLines = new HashMap<>();
 
-    public FileReaderToMap() {
-        this.mapFileLines = new HashMap<>();
-    }
-
-    public Map<String, String> readFileCreateMap(String fileName) {
         URL url = getClass().getClassLoader().getResource(fileName);
 
         try (Stream<String> lines = Files.lines(Paths.get(url.getPath().substring(1)))) {
-            lines.forEach(x -> mapFileLines.put(x.substring(0, 3), x.substring(3, x.length())));
+            lines.forEach(x -> mapFileLines.put(x.substring(INDEX_BEGINNING_ABBREVATION, INDEX_BEGINNING_INFORMATION),
+                    x.substring(INDEX_BEGINNING_INFORMATION)));
         } catch (IOException e) {
             e.printStackTrace();
         }

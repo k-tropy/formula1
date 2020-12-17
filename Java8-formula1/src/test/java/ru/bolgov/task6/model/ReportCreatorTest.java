@@ -47,7 +47,7 @@ public class ReportCreatorTest {
                         "01:12.639_Kimi Raikkonen_FERRARI" });
 
         ReportCreator testReport = new ReportCreator();
-        ArrayList<String> actualList = testReport.createReport(startMap, endMap, abbMap);
+        List<String> actualList = testReport.createReport(startMap, endMap, abbMap);
         assertEquals(expectedList, actualList);
 
     }

@@ -1,6 +1,9 @@
 package ru.bolgov.task6;
 
-import ru.bolgov.task6.model.FileReaderToMap;
+import java.util.List;
+import java.util.Map;
+
+import ru.bolgov.task6.model.MapCreatorWithKeyAbbreviation;
 import ru.bolgov.task6.model.ReportCreator;
 import ru.bolgov.task6.view.Printer;
 
@@ -8,22 +11,20 @@ public class Controller {
 
     public void printReport(String logStart, String logEnd, String abbreviations) {
         
-        FileReaderToMap startReader = new FileReaderToMap();
-        startReader.readFileCreateMap(logStart);
+        MapCreatorWithKeyAbbreviation startReader = new MapCreatorWithKeyAbbreviation();
+        Map<String, String> startMap = startReader.createMap(logStart);
 
-        FileReaderToMap endReader = new FileReaderToMap();
-        endReader.readFileCreateMap(logEnd);
+        MapCreatorWithKeyAbbreviation endReader = new MapCreatorWithKeyAbbreviation();
+        Map<String, String> endMap = endReader.createMap(logEnd);
 
-        FileReaderToMap abbReader = new FileReaderToMap();
-        abbReader.readFileCreateMap(abbreviations);
+        MapCreatorWithKeyAbbreviation abbReader = new MapCreatorWithKeyAbbreviation();
+        Map<String, String> abbMap = abbReader.createMap(abbreviations);
 
         ReportCreator reportCreator = new ReportCreator();
-        reportCreator.createReport(startReader.getMapFileLines(), 
-                                   endReader.getMapFileLines(),
-                                   abbReader.getMapFileLines());
+        List<String> report = reportCreator.createReport(startMap, endMap, abbMap);
 
         Printer printer = new Printer();
-        System.out.println(printer.orderByTimeUnderline15Racers(reportCreator.getReport()));
+        System.out.println(printer.orderByTimeUnderlineTopRacers(report));
 
     }
 

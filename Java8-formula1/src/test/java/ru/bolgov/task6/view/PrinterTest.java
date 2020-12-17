@@ -20,7 +20,7 @@ public class PrinterTest {
                         "01:12.639_Kimi Raikkonen_FERRARI" });
         
         Printer printer = new Printer();
-        String actual = printer.orderByTimeUnderline15Racers(report);
+        String actual = printer.orderByTimeUnderlineTopRacers(report);
         String expected = "1.  Sebastian Vettel    | FERRARI                   | 01:12.415\n" + 
                 "2.  Stoffel Vandoorne   | MCLAREN RENAULT           | 01:12.463\n" + 
                 "3.  Kimi Raikkonen      | FERRARI                   | 01:12.639\n" + 

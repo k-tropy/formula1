@@ -21,9 +21,9 @@ public class FileReaderToMapTest {
         expectedMap.put("SVM", "2018-05-24_12:18:37.735");
         expectedMap.put("MES", "2018-05-24_12:04:45.513");
         
-        FileReaderToMap testReader = new FileReaderToMap();
+        MapCreatorWithKeyAbbreviation testReader = new MapCreatorWithKeyAbbreviation();
         
-        Map<String, String> actualMap = testReader.readFileCreateMap(testFileName);
+        Map<String, String> actualMap = testReader.createMap(testFileName);
         assertEquals(expectedMap, actualMap);
         
     }
