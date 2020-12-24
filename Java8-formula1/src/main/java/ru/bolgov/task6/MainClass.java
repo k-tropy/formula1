@@ -6,9 +6,11 @@ public class MainClass {
         String logEnd = "end.log";
         String abbreviations = "abbreviations.txt";
 
-        Controller controller = new Controller();
-        controller.printReport(logStart, logEnd, abbreviations);
+        ReportCreator report = new ReportCreator();
+        report.createReport(logStart, logEnd, abbreviations);
 
+        new Printer().printReport(report);
+                
     }
 
 }
