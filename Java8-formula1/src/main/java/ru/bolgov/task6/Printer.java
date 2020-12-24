@@ -18,7 +18,6 @@ public class Printer {
     public String printReport(ReportCreator report) {
         Comparator<ResultOfLap> orderByTime = Comparator.comparing(ResultOfLap::getTime);
         return report.getReportMap().values().stream().sorted(orderByTime).map(this::lapResultToString).peek(System.out::println).collect(Collectors.joining("\n"));
-        
     }
 
     private String lapResultToString(ResultOfLap resultOfLap) {

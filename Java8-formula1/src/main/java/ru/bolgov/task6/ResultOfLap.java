@@ -45,7 +45,5 @@ public class ResultOfLap {
     public String getTeam() {
         return team;
     }
-    
-    
 
 }
