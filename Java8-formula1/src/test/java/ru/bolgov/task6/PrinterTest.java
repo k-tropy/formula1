@@ -3,22 +3,13 @@ package ru.bolgov.task6;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.jupiter.api.Test;
 
 @ExtendWith(MockitoExtension.class)
 public class PrinterTest {
@@ -55,4 +46,4 @@ public class PrinterTest {
         assertEquals(expectedString, actualString);
     }
 
-}
+} 

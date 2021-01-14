@@ -43,7 +43,7 @@ public class ReportCreator {
                 this.reportMap.put(buildKey(x), resultOfLap);
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("failed to read data from " + abbreviationFilePath, e);
         }
     }
 
@@ -61,7 +61,7 @@ public class ReportCreator {
         try (Stream<String> lines = Files.lines(endFilePath)) {
             lines.forEach(x -> this.reportMap.get(buildKey(x)).setEnd(parseTime(x)));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("failed to read data from " + endFilePath, e);
         }
     }
 
