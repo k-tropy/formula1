@@ -16,17 +16,17 @@ public class ReportCreator {
     private static final int INDEX_BEGINNING_INFORMATION = 3;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
 
-    private final Map<String, ResultOfLap> reportMap;
+    private final Map<String, LapResult> reportMap;
 
     public ReportCreator() {
         this.reportMap = new HashMap<>();
     }
 
-    public Map<String, ResultOfLap> getReportMap() {
+    public Map<String, LapResult> getReportMap() {
         return reportMap;
     }
 
-    public Map<String, ResultOfLap> createReport(String startFileName, String endFileName, String abbFileName) {
+    public Map<String, LapResult> createReport(String startFileName, String endFileName, String abbFileName) {
         loadDataFromAbbreviationFile(abbFileName);
         loadDataFromStartFile(startFileName);
         loadDataFromEndFile(endFileName);
@@ -35,11 +35,12 @@ public class ReportCreator {
     }
 
     private void loadDataFromAbbreviationFile(String abbreviation) {
-        try (Stream<String> lines = Files.lines(takeFilePath(abbreviation))) {
+        Path abbreviationFilePath = buildFilePath(abbreviation);
+        try (Stream<String> lines = Files.lines(abbreviationFilePath)) {
             lines.forEach(x -> {
                 String[] substrings = x.split("_");
-                ResultOfLap resultOfLap = new ResultOfLap(substrings[1], substrings[2]);
-                this.reportMap.put(takeKey(x), resultOfLap);
+                LapResult resultOfLap = new LapResult(substrings[1], substrings[2]);
+                this.reportMap.put(buildKey(x), resultOfLap);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,16 +48,18 @@ public class ReportCreator {
     }
 
     private void loadDataFromStartFile(String startFile) {
-        try (Stream<String> lines = Files.lines(takeFilePath(startFile))) {
-            lines.forEach(x -> this.reportMap.get(takeKey(x)).setStart(takeTime(x)));
+        Path startFilePath = buildFilePath(startFile);
+        try (Stream<String> lines = Files.lines(startFilePath)) {
+            lines.forEach(x -> this.reportMap.get(buildKey(x)).setStart(parseTime(x)));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("failed to read data from " + startFilePath, e);
         }
     }
 
     private void loadDataFromEndFile(String endFile) {
-         try (Stream<String> lines = Files.lines(takeFilePath(endFile))) {
-            lines.forEach(x -> this.reportMap.get(takeKey(x)).setEnd(takeTime(x)));
+        Path endFilePath = buildFilePath(endFile);        
+        try (Stream<String> lines = Files.lines(endFilePath)) {
+            lines.forEach(x -> this.reportMap.get(buildKey(x)).setEnd(parseTime(x)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,7 +67,7 @@ public class ReportCreator {
 
     private void calculateLapTime() {
         this.reportMap.entrySet().stream().forEach(x -> {
-            ResultOfLap result = x.getValue();
+            LapResult result = x.getValue();
             LocalDateTime startTime = result.getStart();
             LocalDateTime endTime = result.getEnd();
             LocalDateTime lapTime = endTime.minusHours(startTime.getHour()).minusMinutes(startTime.getMinute())
@@ -73,16 +76,17 @@ public class ReportCreator {
         });
     }
     
-    private String takeKey(String s){
+    private String buildKey(String s){
         return s.substring(INDEX_BEGINNING_ABBREVATION, INDEX_BEGINNING_INFORMATION);
     }
     
-    private LocalDateTime takeTime(String s) {
+    private LocalDateTime parseTime(String s) {
         return LocalDateTime.parse(s.substring(INDEX_BEGINNING_INFORMATION), FORMATTER);
     }
     
-    private Path takeFilePath(String fileName) {
+    private Path buildFilePath(String fileName) {
         URL url = getClass().getClassLoader().getResource(fileName);
         return Paths.get(url.getPath().substring(1));
     }
+    
 }

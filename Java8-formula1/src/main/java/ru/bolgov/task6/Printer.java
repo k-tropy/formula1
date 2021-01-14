@@ -16,11 +16,11 @@ public class Printer {
     private int count = 0;
 
     public String printReport(ReportCreator report) {
-        Comparator<ResultOfLap> orderByTime = Comparator.comparing(ResultOfLap::getTime);
+        Comparator<LapResult> orderByTime = Comparator.comparing(LapResult::getTime);
         return report.getReportMap().values().stream().sorted(orderByTime).map(this::lapResultToString).peek(System.out::println).collect(Collectors.joining("\n"));
     }
 
-    private String lapResultToString(ResultOfLap resultOfLap) {
+    private String lapResultToString(LapResult resultOfLap) {
         StringBuilder result = new StringBuilder();
         String number = ++count + ".";
 
